@@ -61,7 +61,8 @@ INSTALLED_APPS = [
     'corsheaders',
 
     # Apps
-    'users_module'
+    'users_module',
+    'youtube_module'
 ]
 
 MIDDLEWARE = [

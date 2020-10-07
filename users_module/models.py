@@ -3,12 +3,14 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-
-# Create your models here.
-
 # Uncomment and edit the following User model and the Custom UserManager to represent your needs. The following has
 # been coded to use Email instead of username, feel free to modify it for any particular use-case you need it for.
 # You must also uncomment a line in the settings.py file that sets this model as the Auth User Model
+from youtube_module.models import Keyword
+
+
+# Create your models here.
+
 
 class UserManager(BaseUserManager):
     """Define a model manager for User model with no username field."""
@@ -51,7 +53,7 @@ class User(AbstractUser):
     username = None
     user_id = models.AutoField(primary_key=True)
     email = models.EmailField(unique=True)
-    keyword = models.CharField(max_length=300)
+    keyword = models.ForeignKey(Keyword, on_delete=models.CASCADE, related_name='user_list')
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
