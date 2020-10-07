@@ -50,10 +50,6 @@ INSTALLED_APPS = [
     'rest_auth.registration',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount',
-
-    # * Add your desired social auth providers below
-    # 'allauth.socialaccount.providers.google',
 
     # Other Libraries
     'django_filters',
@@ -78,10 +74,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'tubestack_backend.urls'
-
-# If you wish to have a Custom User Model, please go to the users_module app and go through all the files there.
-# There are detailed instructions on setting up the same. Uncomment the following line once the setup there is
-# complete.
 
 AUTH_USER_MODEL = 'users_module.User'
 
@@ -181,16 +173,10 @@ REST_FRAMEWORK = {
 SITE_ID = 1
 
 REST_AUTH_SERIALIZERS = {
-
-    # Add custom serializers for Rest Auth
-
     'LOGIN_SERIALIZER': 'users_module.serializers.CustomLoginSerializer'
 }
 
 REST_AUTH_REGISTER_SERIALIZERS = {
-
-    # Add custom serializers for Rest Auth Registration
-
     'REGISTER_SERIALIZER': 'users_module.serializers.CustomRegisterSerializer'
 }
 
@@ -223,19 +209,6 @@ LOGIN_REDIRECT_URL = os.environ.get('LOGIN_REDIRECT_URL', "https://www.example.c
 # CORS SETTINGS
 CORS_ORIGIN_ALLOW_ALL = True
 
-# HEROKU Settings
-
-if bool(int(os.environ.get("PROD", "0"))) and bool(int(os.environ.get("HEROKU", "0"))):
-    # HEROKU SETTINGS
-    import django_heroku
-
-    django_heroku.settings(locals())
-
-    if 'DATABASE_URL' in os.environ:
-        import dj_database_url
-
-        DATABASES = {'default': dj_database_url.config()}
-
 # DOCKER Settings
 
 if bool(int(os.environ.get("DOCKER", "0"))):
@@ -248,18 +221,11 @@ if bool(int(os.environ.get("DOCKER", "0"))):
         'PORT': 5432,
     }}
 
-# EMAIL SETTINGS
-EMAIL_HOST = 'smtp.mailgun.org'
-EMAIL_HOST_USER = 'no-reply@mail.your-mailgun-registered-subdomain.domain.com'
-# EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = "your-mailgun-api-key"
-# EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = "no-reply@subdomain.domain.com"
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
-
 # Celery Config
 BROKER_URL = f'amqp://{os.environ.get("RABBITMQ_DEFAULT_USER")}:{os.environ.get("RABBITMQ_DEFAULT_PASS")}@localhost:5672/{os.environ.get("RABBITMQ_DEFAULT_VHOST")}'
+
+if bool(int(os.environ.get("DOCKER", "0"))):
+    BROKER_URL = f'amqp://{os.environ.get("RABBITMQ_DEFAULT_USER")}:{os.environ.get("RABBITMQ_DEFAULT_PASS")}@rabbitmq:5672/{os.environ.get("RABBITMQ_DEFAULT_VHOST")}'
 
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'

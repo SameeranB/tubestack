@@ -30,17 +30,25 @@ services:
       - "5672:5672"
 
   celery:
-    build: ../tubestack_backend
+    build:
+      context: ..
+      dockerfile: Docker/Dockerfile
     env_file: ../tubestack_backend/.env
-    command: bash -c "celery -A tubestack_backend worker -l info"
+    volumes:
+      - ..:/usr/src/app/
+    command: celery -A tubestack_backend worker -l info
     depends_on:
       - db
       - rabbitmq
 
   celery-beat:
-    build: ../tubestack_backend
+    build:
+      context: ..
+      dockerfile: Docker/Dockerfile
     env_file: ../tubestack_backend/.env
-    command: bash -c "celery -A tubestack_backend beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler"
+    volumes:
+      - ..:/usr/src/app/
+    command: celery -A tubestack_backend beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
     depends_on:
       - db
       - rabbitmq

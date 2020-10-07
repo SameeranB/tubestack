@@ -14,4 +14,4 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-ENTRYPOINT ["/usr/src/app/scripts/entrypoint.sh"]
+EXPOSE 8000
