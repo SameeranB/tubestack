@@ -4,7 +4,7 @@ from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.viewsets import GenericViewSet
 
 from youtube_module.models import Keyword, VideoData
@@ -39,7 +39,11 @@ class YoutubeAPIViewSet(ListModelMixin, GenericViewSet):
         return super(YoutubeAPIViewSet, self).get_permissions()
 
     def get_queryset(self):
-        return VideoData.objects.filter(related_keywords__keyword=self.request.user.keyword).order_by('-published_at')
+        if self.request.user.keyword is None:
+            return None
+        else:
+            return VideoData.objects.filter(related_keywords__keyword=self.request.user.keyword).order_by(
+                '-published_at')
 
     @action(methods=['post'], detail=False)
     def set_keyword(self, request, *args, **kwargs):
@@ -54,3 +58,8 @@ class YoutubeAPIViewSet(ListModelMixin, GenericViewSet):
         user.save()
 
         return Response({"message": "Keyword saved"}, status=HTTP_200_OK)
+
+    def list(self, request, *args, **kwargs):
+        if request.user.keyword is None:
+            return Response({"message": "No keyword set for current user"}, status=HTTP_400_BAD_REQUEST)
+        return super(YoutubeAPIViewSet, self).list(self, request, *args, **kwargs)

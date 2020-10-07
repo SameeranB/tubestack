@@ -224,11 +224,12 @@ if bool(int(os.environ.get("DOCKER", "0"))):
 # Celery Config
 BROKER_URL = f'amqp://{os.environ.get("RABBITMQ_DEFAULT_USER")}:{os.environ.get("RABBITMQ_DEFAULT_PASS")}@localhost:5672/{os.environ.get("RABBITMQ_DEFAULT_VHOST")}'
 
-if bool(int(os.environ.get("DOCKER", "0"))):
-    BROKER_URL = f'amqp://{os.environ.get("RABBITMQ_DEFAULT_USER")}:{os.environ.get("RABBITMQ_DEFAULT_PASS")}@rabbitmq:5672/{os.environ.get("RABBITMQ_DEFAULT_VHOST")}'
-
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_CACHE_BACKEND = 'default'
+
+if bool(int(os.environ.get("DOCKER", "0"))):
+    BROKER_URL = 'redis://redis:6379'
+    CELERY_RESULT_BACKEND = 'redis://redis:6379'

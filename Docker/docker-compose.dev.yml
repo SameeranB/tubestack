@@ -23,11 +23,8 @@ services:
     env_file:
       - ../tubestack_backend/.env
 
-  rabbitmq:
-    image: rabbitmq:3
-    env_file: ../tubestack_backend/.env
-    ports:
-      - "5672:5672"
+  redis:
+    image: 'redis:alpine'
 
   celery:
     build:
@@ -39,7 +36,7 @@ services:
     command: celery -A tubestack_backend worker -l info
     depends_on:
       - db
-      - rabbitmq
+      - redis
 
   celery-beat:
     build:
@@ -51,7 +48,7 @@ services:
     command: celery -A tubestack_backend beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
     depends_on:
       - db
-      - rabbitmq
+      - redis
 
 volumes:
   postgres_data:

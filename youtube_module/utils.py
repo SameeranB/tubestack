@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from googleapiclient.discovery import build
 
 from youtube_module.models import VideoData, VideoKeywordRelationship, Keyword
@@ -16,6 +17,7 @@ class YoutubeClient:
 
         response = request.execute()
         for item in response['items']:
+
             video = VideoData.objects.get_or_create(
                 video_id=item['id']['videoId'],
                 title=item['snippet']['title'],
@@ -25,7 +27,10 @@ class YoutubeClient:
                 published_at=item['snippet']['publishedAt'],
             )
             keyword_instance = Keyword.objects.get(value=keyword)
-            keyword_relationship = VideoKeywordRelationship.objects.create(keyword=keyword_instance, video=video[0])
-            keyword_relationship.save()
+            try:
+                keyword_relationship = VideoKeywordRelationship.objects.create(keyword=keyword_instance, video=video[0])
+                keyword_relationship.save()
+            except IntegrityError:
+                pass
 
         return

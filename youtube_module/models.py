@@ -23,7 +23,7 @@ class Keyword(models.Model):
 
 
 class VideoData(models.Model):
-    video_id = models.CharField(max_length=12, primary_key=True)
+    video_id = models.CharField(max_length=12, primary_key=True, unique=True)
     title = models.CharField(max_length=100)
     description = models.TextField()
     thumbnail = models.URLField()
@@ -39,3 +39,6 @@ class VideoData(models.Model):
 class VideoKeywordRelationship(models.Model):
     keyword = models.ForeignKey(Keyword, on_delete=models.CASCADE, related_name='related_videos')
     video = models.ForeignKey(VideoData, on_delete=models.CASCADE, related_name='related_keywords')
+    
+    class Meta:
+        unique_together = ['keyword', 'video']
