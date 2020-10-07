@@ -30,3 +30,6 @@ jobs:
         python manage.py test
       env:
         DJANGO_SECRET_KEY: 'TEMPORARY_TEST_KEY' 
+        LOGIN_REDIRECT_URL: 'https://www.example.com'
+        LOGIN_URL: 'https://www.example.com'
+
