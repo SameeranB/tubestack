@@ -4,8 +4,6 @@ certifi==2020.4.5.2
 chardet==3.0.4
 coreapi==2.3.3
 coreschema==0.0.4
-coverage==5.3
-coveralls==2.1.2
 defusedxml==0.6.0
 dj-database-url==0.5.0
 Django==3.0.7
@@ -32,7 +30,6 @@ Markdown==3.2.2
 MarkupSafe==1.1.1
 oauthlib==3.1.0
 packaging==20.4
-pkg-resources==0.0.0
 protobuf==3.13.0
 psycopg2==2.8.5
 pyasn1==0.4.8
