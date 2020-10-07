@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from youtube_module.models import Keyword
+from youtube_module.models import Keyword, VideoData
 
 
 class KeywordSerializer(serializers.ModelSerializer):
@@ -12,3 +12,13 @@ class KeywordSerializer(serializers.ModelSerializer):
         model = Keyword
         fields = ['value', 'id']
         read_only_fields = ['id', ]
+
+
+class VideoDataSerializer(serializers.ModelSerializer):
+    """
+    This serializer is to be used by the user to retrieve a list of videos related to his/her keyword
+    """
+
+    class Meta:
+        model = VideoData
+        fields = '__all__'

@@ -15,9 +15,14 @@ class VideoData(models.Model):
     thumbnail = models.URLField()
     channel_name = models.CharField(max_length=300)
     published_at = models.DateTimeField()
-    keyword = models.ForeignKey(Keyword, models.CASCADE, related_name='keyword')
 
     class Meta:
-        indexes = [models.Index(fields=['keyword', 'published_at'])]
-        ordering = ['keyword', '-published_at']
+        indexes = [models.Index(fields=['video_id', 'published_at'])]
+        ordering = ['video_id', '-published_at']
         verbose_name_plural = "VideosData"
+
+
+class VideoKeywordRelationship(models.Model):
+    keyword = models.ForeignKey(Keyword, on_delete=models.CASCADE, related_name='related_videos')
+    video = models.ForeignKey(VideoData, on_delete=models.CASCADE, related_name='related_keywords')
+
