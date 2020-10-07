@@ -1,5 +1,4 @@
 # Create your views here.
-import os
 
 from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin
@@ -10,7 +9,6 @@ from rest_framework.viewsets import GenericViewSet
 
 from youtube_module.models import Keyword, VideoData
 from youtube_module.serializers import KeywordSerializer, VideoDataSerializer
-from youtube_module.utils import YoutubeClient
 
 
 class YoutubeAPIViewSet(ListModelMixin, GenericViewSet):
@@ -54,8 +52,5 @@ class YoutubeAPIViewSet(ListModelMixin, GenericViewSet):
         keyword = Keyword.objects.get_or_create(value=value)[0]
         user.keyword = keyword
         user.save()
-
-        api_instance = YoutubeClient(os.environ.get('YOUTUBE_API_TOKEN'))
-        api_instance.run_search(keyword=keyword)
 
         return Response({"message": "Keyword saved"}, status=HTTP_200_OK)
