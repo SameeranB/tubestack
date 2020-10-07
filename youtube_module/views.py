@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
 from rest_framework.viewsets import GenericViewSet
 
-from tubestack_backend.utils import YoutubeClient
+from youtube_module.utils import YoutubeClient
 from youtube_module.models import Keyword
 from youtube_module.serializers import KeywordSerializer
 
@@ -44,7 +44,7 @@ class YoutubeAPIViewSet(GenericViewSet):
         serializer.is_valid(raise_exception=True)
         value = serializer.data.get('value')
 
-        keyword = Keyword.objects.get_or_create(value=value)
+        keyword = Keyword.objects.get_or_create(value=value)[0]
         user.keyword = keyword
         user.save()
 

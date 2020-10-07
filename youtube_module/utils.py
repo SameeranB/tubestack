@@ -13,7 +13,7 @@ class YoutubeClient:
         )
 
         response = request.execute()
-        print(response)
+        return response
 
     def __del__(self):
         self.service.close()
