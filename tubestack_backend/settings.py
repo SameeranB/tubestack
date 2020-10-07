@@ -211,7 +211,7 @@ ACCOUNT_USERNAME_REQUIRED = False
 OLD_PASSWORD_FIELD_ENABLED = True
 
 # Choose whether email verification is required before login is allowed. Other options are: 'optional' ,
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_VERIFICATION = None
 
 # Ensure that the following two settings point to the frontend's Login route. This is to redirect the user after
 # successful email confirmations and such.
@@ -246,18 +246,9 @@ if bool(int(os.environ.get("DOCKER", "0"))):
         'PORT': 5432,
     }}
 
-# EMAIL SETTINGS
-EMAIL_HOST = 'smtp.mailgun.org'
-EMAIL_HOST_USER = 'no-reply@mail.your-mailgun-registered-subdomain.domain.com'
-# EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = "your-mailgun-api-key"
-# EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = "no-reply@subdomain.domain.com"
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
 
 # Celery Config
-BROKER_URL = f'amqp://{os.environ.get("RABBITMQ_DEFAULT_USER")}:{os.environ.get("RABBITMQ_DEFAULT_PASS")}@localhost:5673/{os.environ.get("RABBITMQ_DEFAULT_VHOST")}'
+BROKER_URL = f'amqp://{os.environ.get("RABBITMQ_DEFAULT_USER")}:{os.environ.get("RABBITMQ_DEFAULT_PASS")}@localhost:5672/{os.environ.get("RABBITMQ_DEFAULT_VHOST")}'
 
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
