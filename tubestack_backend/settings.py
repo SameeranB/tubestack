@@ -257,7 +257,7 @@ EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 
 # Celery Config
-BROKER_URL = f'amqp://{os.environ.get("RABBITMQ_DEFAULT_USER")}:{os.environ.get("RABBITMQ_DEFAULT_PASS")}@localhost:port/{os.environ.get("RABBITMQ_DEFAULT_VHOST")}'
+BROKER_URL = f'amqp://{os.environ.get("RABBITMQ_DEFAULT_USER")}:{os.environ.get("RABBITMQ_DEFAULT_PASS")}@localhost:5673/{os.environ.get("RABBITMQ_DEFAULT_VHOST")}'
 
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
