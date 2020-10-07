@@ -1,1 +1,1 @@
-web: gunicorn DRF_Boilerplate.wsgi
+web: gunicorn tubestack_backend.wsgi
