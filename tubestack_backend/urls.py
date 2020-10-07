@@ -74,11 +74,11 @@ urlpatterns = [
 
     # Rest Auth Registration Endpoints
     path('authentication/registration/', RegisterView.as_view(), name='rest_register'),
-    # path('authentication/registration/verify-email/', VerifyEmailView.as_view(), name='rest_verify_email'),
-    # path('authentication/registration/account-confirm-email/', VerifyEmailView.as_view(),
-    #      name='account_email_verification_sent'),
-    # re_path(r'^authentication/registration/account-confirm-email/(?P<key>[-:\w]+)/$', AllauthConfirmEmailView.as_view(),
-    #         name='account_confirm_email'),
+    path('authentication/registration/verify-email/', VerifyEmailView.as_view(), name='rest_verify_email'),
+    path('authentication/registration/account-confirm-email/', VerifyEmailView.as_view(),
+         name='account_email_verification_sent'),
+    re_path(r'^authentication/registration/account-confirm-email/(?P<key>[-:\w]+)/$', AllauthConfirmEmailView.as_view(),
+            name='account_confirm_email'),
 
     # * Uncomment the following line and import the respective view to enable social login
     # path('authentication/registration/oauth/google/', GoogleLogin.as_view(), name="google_oauth"),
