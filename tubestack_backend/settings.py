@@ -59,6 +59,8 @@ INSTALLED_APPS = [
     'django_filters',
     'drf_yasg',
     'corsheaders',
+    'django_celery_beat',
+    'django_celery_results',
 
     # Apps
     'users_module',
@@ -209,12 +211,12 @@ ACCOUNT_USERNAME_REQUIRED = False
 OLD_PASSWORD_FIELD_ENABLED = True
 
 # Choose whether email verification is required before login is allowed. Other options are: 'optional' ,
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 # Ensure that the following two settings point to the frontend's Login route. This is to redirect the user after
 # successful email confirmations and such.
-LOGIN_URL = os.environ.get('LOGIN_URL')
-LOGIN_REDIRECT_URL = os.environ.get('LOGIN_REDIRECT_URL')
+LOGIN_URL = os.environ.get('LOGIN_URL', "https://www.example.com")
+LOGIN_REDIRECT_URL = os.environ.get('LOGIN_REDIRECT_URL', "https://www.example.com")
 
 # CORS SETTINGS
 CORS_ORIGIN_ALLOW_ALL = True
@@ -253,3 +255,19 @@ EMAIL_HOST_PASSWORD = "your-mailgun-api-key"
 DEFAULT_FROM_EMAIL = "no-reply@subdomain.domain.com"
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
+
+# Celery Config
+BROKER_URL = f'amqp://{os.environ.get("RABBITMQ_DEFAULT_USER")}:{os.environ.get("RABBITMQ_DEFAULT_PASS")}@localhost:5672/{os.environ.get("RABBITMQ_DEFAULT_VHOST")}'
+
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'default'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'tubestack_backend_cache',
+    }
+}

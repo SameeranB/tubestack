@@ -41,7 +41,7 @@ class YoutubeAPIViewSet(ListModelMixin, GenericViewSet):
         return super(YoutubeAPIViewSet, self).get_permissions()
 
     def get_queryset(self):
-        return VideoData.objects.filter(related_keywords__keyword=self.request.user.keyword)
+        return VideoData.objects.filter(related_keywords__keyword=self.request.user.keyword).order_by('-published_at')
 
     @action(methods=['post'], detail=False)
     def set_keyword(self, request, *args, **kwargs):

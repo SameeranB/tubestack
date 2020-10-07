@@ -1,6 +1,6 @@
 from googleapiclient.discovery import build
 
-from youtube_module.models import VideoData, VideoKeywordRelationship
+from youtube_module.models import VideoData, VideoKeywordRelationship, Keyword
 
 
 class YoutubeClient:
@@ -11,7 +11,7 @@ class YoutubeClient:
         request = self.service.search().list(
             part="snippet",
             maxResults=25,
-            q=keyword.value
+            q=keyword
         )
 
         response = request.execute()
@@ -24,11 +24,8 @@ class YoutubeClient:
                 channel_name=item['snippet']['channelTitle'],
                 published_at=item['snippet']['publishedAt'],
             )
-
-            keyword_relationship = VideoKeywordRelationship.objects.create(keyword=keyword, video=video[0])
+            keyword_instance = Keyword.objects.get(value=keyword)
+            keyword_relationship = VideoKeywordRelationship.objects.create(keyword=keyword_instance, video=video[0])
             keyword_relationship.save()
 
         return
-
-    def __del__(self):
-        self.service.close()
