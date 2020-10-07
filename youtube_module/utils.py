@@ -11,6 +11,7 @@ class YoutubeClient:
     def run_search(self, keyword):
         request = self.service.search().list(
             part="snippet",
+            type="video",
             maxResults=25,
             q=keyword
         )
