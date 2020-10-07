@@ -10,7 +10,6 @@ class TestSetup(APITestCase):
 
         self.user_registration_data = {
             'email': 'email@gmail.com',
-            # 'username': 'username1234',
             "password1": 'password1234',
             "password2": 'password1234',
             "first_name": "User",

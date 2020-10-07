@@ -1,4 +1,3 @@
-from allauth.account.models import EmailAddress
 from rest_framework import status
 
 from users_module.tests.test_setup import TestSetup
