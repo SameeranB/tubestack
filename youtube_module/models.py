@@ -11,7 +11,7 @@ class Keyword(models.Model):
     def save(self, *args, **kwargs):
         super(Keyword, self).save(*args, **kwargs)
         schedule = IntervalSchedule.objects.create(
-            every=100,
+            every=20,
             period=IntervalSchedule.SECONDS
         )
         PeriodicTask.objects.create(
