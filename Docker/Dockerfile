@@ -14,4 +14,10 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
+CMD python Docker/wait_for_db.py && \
+    python manage.py migrate && \
+    python manage.py initadmin && \
+    python manage.py runserver 0.0.0.0:8000
+
+
 EXPOSE 8000
