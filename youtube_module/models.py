@@ -39,6 +39,6 @@ class VideoData(models.Model):
 class VideoKeywordRelationship(models.Model):
     keyword = models.ForeignKey(Keyword, on_delete=models.CASCADE, related_name='related_videos')
     video = models.ForeignKey(VideoData, on_delete=models.CASCADE, related_name='related_keywords')
-    
+
     class Meta:
         unique_together = ['keyword', 'video']

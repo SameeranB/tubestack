@@ -3,9 +3,6 @@ from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-# Uncomment and edit the following User model and the Custom UserManager to represent your needs. The following has
-# been coded to use Email instead of username, feel free to modify it for any particular use-case you need it for.
-# You must also uncomment a line in the settings.py file that sets this model as the Auth User Model
 from youtube_module.models import Keyword
 
 
