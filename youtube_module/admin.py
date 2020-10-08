@@ -2,7 +2,7 @@ from django.contrib import admin
 # Register your models here.
 from django.contrib.admin.options import ModelAdmin
 
-from youtube_module.models import Keyword, VideoData, VideoKeywordRelationship
+from youtube_module.models import Keyword, VideoData, VideoKeywordRelationship, YoutubeAPIToken
 
 
 @admin.register(Keyword)
@@ -24,3 +24,9 @@ class VideoKeywordRelationshipAdmin(ModelAdmin):
     list_display = ('keyword', 'video')
     list_filter = ('keyword__value',)
     ordering = ('keyword', 'video')
+
+
+@admin.register(YoutubeAPIToken)
+class YoutubeAPITokenAdmin(ModelAdmin):
+    list_display = ('token', 'units', 'active')
+    list_filter = ('active',)

@@ -51,5 +51,6 @@ class VideoKeywordRelationship(models.Model):
 
 
 class YoutubeAPIToken(models.Model):
-    token = models.CharField(max_length=40)
+    token = models.CharField(max_length=40, unique=True)
+    units = models.PositiveIntegerField(default=0)
     active = models.BooleanField(default=True)

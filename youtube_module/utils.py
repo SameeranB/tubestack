@@ -1,7 +1,8 @@
 from django.db import IntegrityError
 from googleapiclient.discovery import build
+from rest_framework.exceptions import APIException
 
-from youtube_module.models import VideoData, VideoKeywordRelationship, Keyword
+from youtube_module.models import VideoData, VideoKeywordRelationship, Keyword, YoutubeAPIToken
 
 
 class YoutubeClient:
@@ -10,11 +11,17 @@ class YoutubeClient:
     It helps maintain DRY and also allows the search to be run as a function by a scheduler
     """
 
-    def __init__(self, api_token):
+    def __init__(self):
         """
         The youtube data api service is built using the token provided on instantiation.
         """
-        self.service = build('youtube', 'v3', developerKey=api_token)
+        self.token = get_active_token()
+        try:
+            self.service = build('youtube', 'v3', developerKey=self.token.token)
+        except Exception as e:
+            self.token.active = False
+            self.token.save()
+            raise NoActiveTokens
 
     def run_search(self, keyword):
         """
@@ -27,7 +34,12 @@ class YoutubeClient:
             q=keyword
         )
 
-        response = request.execute()
+        try:
+            response = request.execute()
+        except Exception as e:
+            self.token.active = False
+            self.token.save()
+            raise NoActiveTokens
 
         # This loop iterates over the response, checks if the video exists then adds it. It also adds a relationship
         # between the video and the keyword
@@ -48,3 +60,22 @@ class YoutubeClient:
             except IntegrityError:
                 pass
         return
+
+
+class NoActiveTokens(APIException):
+    status_code = 500
+    default_detail = 'There are no active tokens. Please add one to continue'
+    default_code = 'service_unavailable'
+
+
+def get_active_token():
+    token_instance = YoutubeAPIToken.objects.filter(active=True).first()
+    if not token_instance:
+        raise NoActiveTokens
+    token_instance.units += 100
+    token_instance.save()
+    if token_instance.units >= 10000:
+        token_instance.active = False
+        token_instance.save()
+
+    return YoutubeAPIToken.objects.filter(active=True).first()
