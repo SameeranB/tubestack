@@ -32,4 +32,5 @@ jobs:
         DJANGO_SECRET_KEY: 'TEMPORARY_TEST_KEY' 
         LOGIN_REDIRECT_URL: 'https://www.example.com'
         LOGIN_URL: 'https://www.example.com'
+        YOUTUBE_API_TOKEN: ${{ secrets.YOUTUBE_API_TOKEN }}
 
