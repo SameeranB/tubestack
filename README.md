@@ -1,6 +1,7 @@
 # TubeStack
 
 > A quicker way to stay updated with your YouTube feed.
+[![Build Status](https://travis-ci.com/SameeranB/tubestack_backend.svg?branch=master)](https://travis-ci.com/SameeranB/tubestack_backend)
 ---
 You can find the API documentation [here](https://documenter.getpostman.com/view/8369112/TVRj4nu3).
 
