@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from youtube_module.models import Keyword, VideoData
+from youtube_module.models import Keyword, VideoData, YoutubeAPIToken
 
 
 class KeywordSerializer(serializers.ModelSerializer):
@@ -22,3 +22,14 @@ class VideoDataSerializer(serializers.ModelSerializer):
     class Meta:
         model = VideoData
         fields = '__all__'
+
+
+class SetTokenSerializer(serializers.ModelSerializer):
+    """
+    This serializer is to be used by admins to add new API tokens
+    """
+
+    class Meta:
+        model = YoutubeAPIToken
+        fields = '__all__'
+        read_only_fields = ['id', 'active', 'units']

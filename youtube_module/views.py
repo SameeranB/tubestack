@@ -1,15 +1,14 @@
 # Create your views here.
-import os
 
 from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED
 from rest_framework.viewsets import GenericViewSet
 
-from youtube_module.models import Keyword, VideoData
-from youtube_module.serializers import KeywordSerializer, VideoDataSerializer
+from youtube_module.models import Keyword, VideoData, YoutubeAPIToken
+from youtube_module.serializers import KeywordSerializer, VideoDataSerializer, SetTokenSerializer
 from youtube_module.utils import YoutubeClient
 
 
@@ -24,12 +23,20 @@ class YoutubeAPIViewSet(ListModelMixin, GenericViewSet):
         },
         'list': {
             "GET": VideoDataSerializer
+        },
+        'add_token': {
+            "POST": SetTokenSerializer
+        },
+        'list_tokens': {
+            "GET": SetTokenSerializer
         }
     }
 
     permissions = {
         'set_keyword': [IsAuthenticated],
-        'list': [IsAuthenticated]
+        'list': [IsAuthenticated],
+        'add_token': [IsAuthenticated, IsAdminUser],
+        'list_tokens': [IsAuthenticated, IsAdminUser]
     }
 
     def get_serializer_class(self):
@@ -65,7 +72,7 @@ class YoutubeAPIViewSet(ListModelMixin, GenericViewSet):
         user.keyword = keyword
         user.save()
 
-        yt_client = YoutubeClient(os.environ.get('YOUTUBE_API_TOKEN'))
+        yt_client = YoutubeClient()
         yt_client.run_search(keyword=keyword.value)
 
         return Response({"message": "Keyword saved"}, status=HTTP_200_OK)
@@ -78,3 +85,22 @@ class YoutubeAPIViewSet(ListModelMixin, GenericViewSet):
             return Response({"message": "No keyword set for current user"}, status=HTTP_400_BAD_REQUEST)
         else:
             return super(YoutubeAPIViewSet, self).list(self, request, *args, **kwargs)
+
+    @action(methods=['post'], detail=False)
+    def add_token(self, request, *args, **kwargs):
+        """
+        This endpoint is to be used by admins to add a new API Token
+        """
+        serializer = self.get_serializer_class()(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(active=True, units=0)
+        return Response({'message': "Token added"}, status=HTTP_201_CREATED)
+
+    @action(methods=['get'], detail=False)
+    def list_tokens(self, request, *args, **kwargs):
+        """
+        This endpoint is to be used by admins to list all API tokens
+        """
+        serializer = self.get_serializer_class()(data=YoutubeAPIToken.objects.all(), many=True)
+        serializer.is_valid()
+        return Response(serializer.data, status=HTTP_200_OK)

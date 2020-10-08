@@ -24,6 +24,7 @@ class Keyword(models.Model):
     def __str__(self):
         return self.value
 
+
 class VideoData(models.Model):
     video_id = models.CharField(max_length=12, primary_key=True, unique=True)
     title = models.CharField(max_length=100)
@@ -47,3 +48,9 @@ class VideoKeywordRelationship(models.Model):
 
     def __str__(self):
         return self.keyword.value
+
+
+class YoutubeAPIToken(models.Model):
+    token = models.CharField(max_length=40, unique=True)
+    units = models.PositiveIntegerField(default=0)
+    active = models.BooleanField(default=True)
