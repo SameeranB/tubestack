@@ -1,5 +1,8 @@
+from django.test import TransactionTestCase
 from django.urls import reverse
 from rest_framework.test import APITestCase
+
+from users_module.models import User
 
 
 class TestSetup(APITestCase):
@@ -25,4 +28,19 @@ class TestSetup(APITestCase):
         return super().setUp()
 
     def tearDown(self):
+        return super().tearDown()
+
+
+class TestModelSetup(TransactionTestCase):
+    def setUp(self):
+        self.user1 = User.objects.create(email="admin@gmail.com",
+                                         first_name="test",
+                                         last_name="admin"
+                                         )
+        self.user2 = User.objects.create(email="member@gmail.com",
+                                         first_name="test",
+                                         last_name="member"
+                                         )
+
+    def tearDown(self) -> None:
         return super().tearDown()

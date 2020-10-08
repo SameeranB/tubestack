@@ -50,7 +50,7 @@ class User(AbstractUser):
     username = None
     user_id = models.AutoField(primary_key=True)
     email = models.EmailField(unique=True)
-    keyword = models.ForeignKey(Keyword, on_delete=models.CASCADE, related_name='user_list', null=True)
+    keyword = models.ForeignKey(Keyword, on_delete=models.CASCADE, related_name='user_list', null=True, blank=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']
