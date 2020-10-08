@@ -61,7 +61,7 @@ class YoutubeAPIViewSet(ListModelMixin, GenericViewSet):
         serializer.is_valid(raise_exception=True)
         value = serializer.data.get('value')
 
-        keyword = Keyword.objects.get_or_create(value=value)[0]
+        keyword = Keyword.objects.get_or_create(value=value.lower())[0]
         user.keyword = keyword
         user.save()
 

@@ -21,6 +21,8 @@ class Keyword(models.Model):
             args=json.dumps([self.value])
         )
 
+    def __str__(self):
+        return self.value
 
 class VideoData(models.Model):
     video_id = models.CharField(max_length=12, primary_key=True, unique=True)
@@ -42,3 +44,6 @@ class VideoKeywordRelationship(models.Model):
 
     class Meta:
         unique_together = ['keyword', 'video']
+
+    def __str__(self):
+        return self.keyword.value
