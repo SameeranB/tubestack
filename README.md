@@ -6,6 +6,20 @@
 ---
 You can find the API documentation [here](https://documenter.getpostman.com/view/8369112/TVRj4nu3).
 
+## Features:
+* User Registration and Authentication using Django Tokens.
+* Every user can choose their keyword and can also change them at any time.
+* Backend syncs with YouTube every 20 seconds.
+* Video and Keyword storage is optimized for multiple users. Redundancy is minimum: `VideoData` is never repeated, the same `Keywords` are never stored more than once.
+* Uses RabbitMQ for celery task scheduling. Very Scalable.
+* Custom client wrapper for Google API Client.
+* Containerized Using Docker.
+* Automatic invalidation of quota-exceeded API tokens
+* Ability to add new tokens as an Admin
+* Ability to list all tokens.
+* Django Admin Panel comes configured with searching and filtering options. Find it at: `localhost:8000/admin`
+
+
 ## Instructions
 
 ---
@@ -37,6 +51,7 @@ You can find the API documentation [here](https://documenter.getpostman.com/view
 ---
 ## Additional Information
 
+* Please use fresh API Tokens when adding them to the system. The validity of the token is calculated based on the number of times it is used.
 * An Admin account is automatically created when the docker container is run. The default credentials for which can be set in the environment file.
 * Please ensure that `DOCKER=0` is present in your environment file if you are not using docker, the `settings.py` file will implement certain changes accordingly. Similary for `DOCKER=1` when using Docker.
 * The admin panel has been configured to display video information and sorting-searching options.I ran out of time and couldn't make a seperate dashboard.
