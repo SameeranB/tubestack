@@ -19,6 +19,7 @@ You can find the API documentation [here](https://documenter.getpostman.com/view
 * Ability to list all tokens.
 * Django Admin Panel comes configured with searching and filtering options. Find it at: `localhost:8000/admin`
 
+---
 
 ## Instructions
 
