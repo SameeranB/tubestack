@@ -64,7 +64,7 @@ class YoutubeClient:
 
 class NoActiveTokens(APIException):
     status_code = 500
-    default_detail = 'There are no active tokens. Please add one to continue'
+    default_detail = 'There are no active tokens. Please contact an Admin to continue.'
     default_code = 'service_unavailable'
 
 

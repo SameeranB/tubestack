@@ -4,12 +4,12 @@ from rest_framework.decorators import action
 from rest_framework.mixins import ListModelMixin
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_500_INTERNAL_SERVER_ERROR
 from rest_framework.viewsets import GenericViewSet
 
 from youtube_module.models import Keyword, VideoData, YoutubeAPIToken
 from youtube_module.serializers import KeywordSerializer, VideoDataSerializer, SetTokenSerializer
-from youtube_module.utils import YoutubeClient
+from youtube_module.utils import YoutubeClient, NoActiveTokens
 
 
 class YoutubeAPIViewSet(ListModelMixin, GenericViewSet):
@@ -73,8 +73,11 @@ class YoutubeAPIViewSet(ListModelMixin, GenericViewSet):
         user.save()
 
         yt_client = YoutubeClient()
-        yt_client.run_search(keyword=keyword.value)
-
+        try:
+            yt_client.run_search(keyword=keyword.value)
+        except NoActiveTokens:
+            return Response({"message": "There are no active tokens available. Please contact an admin"},
+                            status=HTTP_500_INTERNAL_SERVER_ERROR)
         return Response({"message": "Keyword saved"}, status=HTTP_200_OK)
 
     def list(self, request, *args, **kwargs):
