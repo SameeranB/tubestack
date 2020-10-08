@@ -11,13 +11,15 @@ You can find the API documentation [here](https://documenter.getpostman.com/view
 * Every user can choose their keyword and can also change them at any time.
 * Backend syncs with YouTube every 20 seconds.
 * Video and Keyword storage is optimized for multiple users. Redundancy is minimum: `VideoData` is never repeated, the same `Keywords` are never stored more than once.
-* Uses RabbitMQ for celery task scheduling. Very Scalable.
+* Uses Celery with RabbitMQ for task scheduling. Very Scalable.
 * Custom client wrapper for Google API Client.
 * Containerized Using Docker.
-* Automatic invalidation of quota-exceeded API tokens
+* Automatic invalidation of quota-exceeded API tokens.
+* Automatic switch to other active tokens if available.
 * Ability to add new tokens as an Admin
 * Ability to list all tokens.
 * Django Admin Panel comes configured with searching and filtering options. Find it at: `localhost:8000/admin`
+* The Admin Panel can also view all scheduled tasks(Find them at `http://localhost:8000/admin/django_celery_beat/periodictask/`), and their occurences(Find them at `http://localhost:8000/admin/django_celery_results/taskresult/`). 
 
 ---
 
@@ -29,6 +31,7 @@ You can find the API documentation [here](https://documenter.getpostman.com/view
 2. Ensure that `DOCKER=1` is set in your .env file.
 3. Run this command: `docker-compose -f Docker/docker-compose.dev.yml up --build`. This may take some time.
 4. You should be able to access the API at `localhost:8000`.
+5. Tests can be run by executing `python manage.py test` both inside the docker container and outside.
 
 
 ### Without Docker
