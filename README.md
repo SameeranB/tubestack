@@ -28,7 +28,7 @@ You can find the API documentation [here](https://documenter.getpostman.com/view
 
 5. Collect the static files using `python manage.py collectstatic`
 6. Apply the migrations using `python manage.py migrate`
-7. Create a superuser using `python manage.py createsuperuser`
+7. Create a superuser and the initial Youtube Token using `python manage.py initadmin`
 8. Run 3 seperate terminal windows, with the following commands:
    * run `celery -A tubestack_backend worker -l info` to activate the worker.
    * run `celery -A tubestack_backend beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler` to activate the scheduler.
