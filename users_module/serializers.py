@@ -4,12 +4,18 @@ from rest_framework import serializers
 
 
 class CustomLoginSerializer(LoginSerializer):
+    """
+    This is the login serializer used for authentication
+    """
     username = None
     email = serializers.EmailField(required=True)
     password = serializers.CharField(style={'input_type': 'password'})
 
 
 class CustomRegisterSerializer(RegisterSerializer):
+    """
+    This is the registration serializer used for authentication
+    """
     username = None
     first_name = serializers.CharField(max_length=100)
     last_name = serializers.CharField(max_length=100)

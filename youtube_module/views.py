@@ -14,6 +14,9 @@ from youtube_module.utils import YoutubeClient
 
 
 class YoutubeAPIViewSet(ListModelMixin, GenericViewSet):
+    """
+    This viewset contains endpoints pertaining to the YouTube API, searched keywords and Video Data
+    """
     # * Configuration
     serializers = {
         'set_keyword': {
@@ -49,6 +52,9 @@ class YoutubeAPIViewSet(ListModelMixin, GenericViewSet):
 
     @action(methods=['post'], detail=False)
     def set_keyword(self, request, *args, **kwargs):
+        """
+        This endpoint sets a keyword for the current user. Any existing keyword relationships will be deleted.
+        """
         user = self.request.user
         serializer = self.get_serializer_class()(data=request.data)
 
@@ -65,6 +71,10 @@ class YoutubeAPIViewSet(ListModelMixin, GenericViewSet):
         return Response({"message": "Keyword saved"}, status=HTTP_200_OK)
 
     def list(self, request, *args, **kwargs):
+        """
+        This endpoint lists all the videos related to the keyword of the current user
+        """
         if request.user.keyword is None:
             return Response({"message": "No keyword set for current user"}, status=HTTP_400_BAD_REQUEST)
-        return super(YoutubeAPIViewSet, self).list(self, request, *args, **kwargs)
+        else:
+            return super(YoutubeAPIViewSet, self).list(self, request, *args, **kwargs)
